@@ -1,4 +1,15 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
+import 'video_record_screen.dart';
+import 'voice_record_screen.dart';
+import 'uploads_screen.dart';
+import 'profile_screen.dart';
+import 'signin_screen.dart';
+import 'welcome_screen.dart';
+import 'messages_screen.dart';
+import 'settings_screen.dart';
+import 'support_screen.dart';
+import 'chatbot_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,8 +25,19 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
       ),
-      home: MyApp(),
+      initialRoute: '/SignIn',
       routes: {
+        '/SignIn': (context) => SigninScreen(),
+        '/Welcome': (context) => WelcomeScreen(),
+        '/Home': (context) => HomeScreen(),
+        '/VideoRecord': (context) => VideoRecordScreen(),
+        '/VoiceRecord': (context) => VoiceRecordScreen(),
+        '/Uploads': (context) => UploadsScreen(),
+        '/Profile': (context) => ProfileScreen(),
+        '/Messages': (context) => MessagesScreen(),
+        '/Settings': (context) => SettingsScreen(),
+        '/Support': (context) => SupportScreen(),
+        '/Chatbot': (context) => ChatbotScreen(),
       },
     );
   }

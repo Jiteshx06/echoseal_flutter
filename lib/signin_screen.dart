@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'home_screen.dart';
+import 'welcome_screen.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class SigninScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -75,10 +73,24 @@ class _LoginFormState extends State<LoginForm> {
       return;
     }
 
-    if (email == "user@a.com" && password == "password123") {
+    if (email == "demo@gmail.com" && password == "112233") {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Login Successful")),
       );
+
+      Future.delayed(Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => WelcomeScreen()),
+        );
+
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          );
+        });
+      });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Invalid Credentials")),
