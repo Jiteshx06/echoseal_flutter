@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -25,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _showImageSourceDialog() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Color.fromRGBO(0,0,0,0.8),
+      backgroundColor: Color.fromRGBO(0, 0, 0, 0.8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -44,6 +45,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
+  }
+
+  void signOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacementNamed(context, '/login'); // Redirect to login screen after logout
   }
 
   @override
@@ -70,10 +76,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: BounceInDown(
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundColor: Color.fromRGBO(0,0,0,0.3),
+                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.3),
                   backgroundImage: _image != null ? FileImage(_image!) : null,
                   child: _image == null
-                      ? Icon(Icons.camera_alt, size: 50, color: Color.fromRGBO(0,0,0,0.7))
+                      ? Icon(Icons.camera_alt, size: 50, color: Color.fromRGBO(0, 0, 0, 0.7))
                       : null,
                 ),
               ),
@@ -82,13 +88,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             FadeInUp(
               duration: Duration(milliseconds: 800),
               child: ElevatedButton(
-                onPressed: () {}, // Implement logout function
+                onPressed: signOut,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.redAccent,
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
-                child: Text('Logout', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+                child: Text(
+                  'Logout',
+                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
           ],

@@ -1,30 +1,23 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:echoseal2/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Home screen loads and navigates correctly', (WidgetTester tester) async {
+    // Load the main app
     await tester.pumpWidget(MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify the home screen is displayed
+    expect(find.text('Echoseal'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Check if FloatingActionButton exists
+    expect(find.byType(FloatingActionButton), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Tap the FloatingActionButton (Chatbot button)
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle(); // Wait for navigation animation
+
+    // Verify that the Chatbot screen is now displayed
+    expect(find.text('Chatbot'), findsOneWidget);
   });
 }

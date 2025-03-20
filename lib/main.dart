@@ -5,13 +5,18 @@ import 'voice_record_screen.dart';
 import 'uploads_screen.dart';
 import 'profile_screen.dart';
 import 'signin_screen.dart';
+import 'signup_screen.dart';
 import 'welcome_screen.dart';
 import 'messages_screen.dart';
 import 'settings_screen.dart';
 import 'support_screen.dart';
 import 'chatbot_screen.dart';
+import 'Widget_tree.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -26,18 +31,19 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
       ),
       initialRoute: '/SignIn',
-      routes: {
-        '/SignIn': (context) => SigninScreen(),
-        '/Welcome': (context) => WelcomeScreen(),
-        '/Home': (context) => HomeScreen(),
-        '/VideoRecord': (context) => VideoRecordScreen(),
-        '/VoiceRecord': (context) => VoiceRecordScreen(),
-        '/Uploads': (context) => UploadsScreen(),
-        '/Profile': (context) => ProfileScreen(),
-        '/Messages': (context) => MessagesScreen(),
-        '/Settings': (context) => SettingsScreen(),
-        '/Support': (context) => SupportScreen(),
-        '/Chatbot': (context) => ChatbotScreen(),
+        routes: {
+          '/SignIn': (context) => SigninScreen(),
+          '/Signup': (context) => SignupScreen(),
+          '/Welcome': (context) => WelcomeScreen(),
+          '/Home': (context) => HomeScreen(),
+          '/VideoRecord': (context) => VideoRecordScreen(),
+          '/VoiceRecord': (context) => VoiceRecordScreen(),
+          '/Uploads': (context) => UploadsScreen(),
+          '/Profile': (context) => ProfileScreen(),
+          '/Messages': (context) => MessagesScreen(),
+          '/Settings': (context) => SettingsScreen(),
+          '/Support': (context) => SupportScreen(),
+          '/Chatbot': (context) => ChatbotScreen(),
       },
     );
   }

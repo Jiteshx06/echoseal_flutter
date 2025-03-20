@@ -1,19 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:echoseal2/auth.dart';
+import 'signin_screen.dart';
 import 'package:lottie/lottie.dart';
-import 'home_screen.dart';
-import 'signup_screen.dart';
-import 'welcome_screen.dart';
 
-class SigninScreen extends StatelessWidget {
-
-  final User? user = Auth().currentUser;
-
-  Future<void> signOut() async {
-    await Auth().signOut();
-  }
-
+class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +18,10 @@ class SigninScreen extends StatelessWidget {
                 child: SizedBox(
                   width: 600,
                   height: 450,
-                  child: Lottie.asset('assets/lottie/login_gradient.json', fit: BoxFit.cover),
+                  child: Lottie.asset(
+                    'assets/lottie/login_gradient.json',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Align(
@@ -44,15 +37,7 @@ class SigninScreen extends StatelessWidget {
                       topRight: Radius.circular(70),
                     ),
                   ),
-                  child: LoginForm(),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 630,
-                  child: Lottie.asset('assets/lottie/login_animation.json'),
+                  child: SignupForm(),
                 ),
               ),
             ],
@@ -63,17 +48,17 @@ class SigninScreen extends StatelessWidget {
   }
 }
 
-class LoginForm extends StatefulWidget {
+class SignupForm extends StatefulWidget {
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _SignupFormState createState() => _SignupFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignupFormState extends State<SignupForm> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> handleLogin() async {
+  Future<void> handleSignup() async {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
@@ -85,35 +70,22 @@ class _LoginFormState extends State<LoginForm> {
     }
 
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login Successful")),
+        SnackBar(content: Text("Signup Successful!")),
       );
 
-      // Navigate to Welcome Screen first
+      // Navigate to another screen after successful signup
       Future.delayed(Duration(seconds: 1), () {
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => WelcomeScreen()),
-        );
-
-        // Then, navigate to Home Screen from Welcome Screen after 4 seconds
-        Future.delayed(Duration(seconds: 4), () {
-          if (!mounted) return;
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-          );
-        });
+        Navigator.pop(context); // Go back to login screen
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}")),
+        SnackBar(content: Text("Signup Failed: ${e.toString()}")),
       );
     }
   }
@@ -124,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Revealing truth in every voice",
+          "Create an Account",
           style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 20),
@@ -150,12 +122,12 @@ class _LoginFormState extends State<LoginForm> {
         ),
         SizedBox(height: 30),
         ElevatedButton(
-          onPressed: handleLogin,
-          child: Text("Login"),
+          onPressed: handleSignup,
+          child: Text("Sign Up"),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
-            padding: EdgeInsets.symmetric(horizontal: 80, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
           ),
         ),
         SizedBox(height: 20),
@@ -163,18 +135,18 @@ class _LoginFormState extends State<LoginForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Don't have an account? ",
+              "Already have an account? ",
               style: TextStyle(color: Colors.white),
             ),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignupScreen()),
+                  MaterialPageRoute(builder: (context) => SigninScreen()),
                 );
               },
               child: Text(
-                "Create account here",
+                "Login here",
                 style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               ),
             ),
